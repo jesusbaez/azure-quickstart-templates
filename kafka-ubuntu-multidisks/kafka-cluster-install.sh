@@ -38,7 +38,7 @@ help()
     #TODO: Add help text here
     echo "This script installs kafka cluster on Ubuntu"
     echo "Parameters:"
-    echo "-k kafka version like 0.8.2.1"
+    echo "-k kafka version like 0.10.1.0"
     echo "-b broker id"
     echo "-h view this help content"
     echo "-z zookeeper not kafka"
@@ -78,7 +78,7 @@ else
 fi
 
 #Script Parameters
-KF_VERSION="0.8.2.1"
+KF_VERSION="0.10.1.0"
 BROKER_ID=0
 ZOOKEEPER1KAFKA0="0"
 
@@ -128,7 +128,7 @@ install_java()
     apt-get -y update 
     echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
     echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
-    apt-get -y install oracle-java7-installer
+    apt-get -y install oracle-java8-installer
 }
 
 # Expand a list of successive IP range defined by a starting address prefix (e.g. 10.0.0.1) and the number of machines in the range
@@ -163,22 +163,22 @@ install_zookeeper()
 {
 	mkdir -p /var/lib/zookeeper
 	cd /var/lib/zookeeper
-	wget "http://apache.cs.utah.edu/zookeeper/zookeeper-3.4.6/zookeeper-3.4.6.tar.gz"
-	tar -xvf "zookeeper-3.4.6.tar.gz"
+	wget "http://mirrors.ukfast.co.uk/sites/ftp.apache.org/zookeeper/stable/zookeeper-3.4.9.tar.gz"
+	tar -xvf "zookeeper-3.4.9.tar.gz"
 
-	touch zookeeper-3.4.6/conf/zoo.cfg
+	touch zookeeper-3.4.9/conf/zoo.cfg
 
-	echo "tickTime=2000" >> zookeeper-3.4.6/conf/zoo.cfg
-	echo "dataDir=/var/lib/zookeeper" >> zookeeper-3.4.6/conf/zoo.cfg
-	echo "clientPort=2181" >> zookeeper-3.4.6/conf/zoo.cfg
-	echo "initLimit=5" >> zookeeper-3.4.6/conf/zoo.cfg
-	echo "syncLimit=2" >> zookeeper-3.4.6/conf/zoo.cfg
+	echo "tickTime=2000" >> zookeeper-3.4.9/conf/zoo.cfg
+	echo "dataDir=/var/lib/zookeeper" >> zookeeper-3.4.9/conf/zoo.cfg
+	echo "clientPort=2181" >> zookeeper-3.4.9/conf/zoo.cfg
+	echo "initLimit=5" >> zookeeper-3.4.9/conf/zoo.cfg
+	echo "syncLimit=2" >> zookeeper-3.4.9/conf/zoo.cfg
 	# OLD Test echo "server.1=${ZOOKEEPER_IP_PREFIX}:2888:3888" >> zookeeper-3.4.6/conf/zoo.cfg
 	$(expand_ip_range_for_server_properties "${ZOOKEEPER_IP_PREFIX}-${INSTANCE_COUNT}")
 
 	echo $(($1+1)) >> /var/lib/zookeeper/myid
 
-	zookeeper-3.4.6/bin/zkServer.sh start
+	zookeeper-3.4.9/bin/zkServer.sh start
 }
 
 # Setup datadisks
@@ -209,7 +209,7 @@ install_kafka()
 	name=kafka
 	version=${KF_VERSION}
 	#this Kafka version is prefix same used for all versions
-	kafkaversion=2.10
+	kafkaversion=2.11
 	description="Apache Kafka is a distributed publish-subscribe messaging system."
 	url="https://kafka.apache.org/"
 	arch="all"
