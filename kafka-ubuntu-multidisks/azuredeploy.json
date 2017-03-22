@@ -67,7 +67,7 @@
       "diskSize": 1023,
       "vmTemplate": "[concat(variables('templateBaseUrl'), 'datastore-2disk-resources.json')]",
       "zookeeperCount": 1,
-      "brokerCount": 3,
+      "brokerCount": 1,
       "storage": {
         "name": "[parameters('storageAccountNamePrefix')]",
         "count": 1,
